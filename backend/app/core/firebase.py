@@ -18,8 +18,13 @@ if not firebase_admin._apps:
     # Render / production
     if FIREBASE_SERVICE_ACCOUNT_BASE64:
         try:
+            encoded_credentials = FIREBASE_SERVICE_ACCOUNT_BASE64.strip()
+
+            # Restore missing Base64 padding if necessary
+            encoded_credentials += "=" * (-len(encoded_credentials) % 4)
+
             decoded_json = base64.b64decode(
-                FIREBASE_SERVICE_ACCOUNT_BASE64
+                encoded_credentials
             ).decode("utf-8")
 
             service_account_info = json.loads(decoded_json)
