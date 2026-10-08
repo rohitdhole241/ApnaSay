@@ -1,5 +1,6 @@
 import os
 import json
+import base64
 import firebase_admin
 
 from firebase_admin import credentials
@@ -7,30 +8,38 @@ from firebase_admin import firestore
 
 
 SERVICE_ACCOUNT_FILE = "serviceAccountKey.json"
-FIREBASE_SERVICE_ACCOUNT_JSON = os.getenv("FIREBASE_SERVICE_ACCOUNT_JSON")
+FIREBASE_SERVICE_ACCOUNT_BASE64 = os.getenv(
+    "FIREBASE_SERVICE_ACCOUNT_BASE64"
+)
 
 
 if not firebase_admin._apps:
 
     # Render / production
-    if FIREBASE_SERVICE_ACCOUNT_JSON:
+    if FIREBASE_SERVICE_ACCOUNT_BASE64:
         try:
-            service_account_info = json.loads(FIREBASE_SERVICE_ACCOUNT_JSON)
+            decoded_json = base64.b64decode(
+                FIREBASE_SERVICE_ACCOUNT_BASE64
+            ).decode("utf-8")
+
+            service_account_info = json.loads(decoded_json)
+
             cred = credentials.Certificate(service_account_info)
-        except json.JSONDecodeError as error:
+
+        except Exception as error:
             raise ValueError(
-                "FIREBASE_SERVICE_ACCOUNT_JSON contains invalid JSON."
+                "FIREBASE_SERVICE_ACCOUNT_BASE64 contains invalid "
+                "Firebase credentials."
             ) from error
 
     # Local development
     elif os.path.exists(SERVICE_ACCOUNT_FILE):
         cred = credentials.Certificate(SERVICE_ACCOUNT_FILE)
 
-    # Nothing available
     else:
         raise FileNotFoundError(
             "Firebase credentials not found. "
-            "Set FIREBASE_SERVICE_ACCOUNT_JSON or "
+            "Set FIREBASE_SERVICE_ACCOUNT_BASE64 or "
             "place serviceAccountKey.json inside the backend folder."
         )
 
