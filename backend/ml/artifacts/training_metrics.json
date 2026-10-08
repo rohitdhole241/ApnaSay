@@ -1,0 +1,33 @@
+{
+  "model": "RandomForestRegressor",
+  "profiles": 5000,
+  "training_pairs": 32000,
+  "test_pairs": 8000,
+  "mae": 0.026578949645696792,
+  "r2": 0.9541372052425098,
+  "mae_percentage_points": 2.657894964569679,
+  "feature_names": [
+    "age_similarity",
+    "budget_similarity",
+    "city_similarity",
+    "locality_similarity",
+    "move_in_similarity",
+    "room_type_similarity",
+    "pg_type_similarity",
+    "distance_preference_similarity",
+    "food_preference_similarity",
+    "food_habit_similarity",
+    "cleanliness_similarity",
+    "cleaning_frequency_similarity",
+    "sleep_schedule_similarity",
+    "wake_up_time_similarity",
+    "noise_preference_similarity",
+    "social_level_similarity",
+    "weekend_lifestyle_similarity",
+    "hobbies_similarity",
+    "occupation_similarity",
+    "study_environment_similarity",
+    "compatibility_factor_similarity"
+  ],
+  "random_seed": 23101
+}

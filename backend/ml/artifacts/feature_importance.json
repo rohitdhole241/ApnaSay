@@ -1,0 +1,23 @@
+{
+  "locality_similarity": 0.78646483205605,
+  "city_similarity": 0.03777400205262995,
+  "food_preference_similarity": 0.030745835521710632,
+  "sleep_schedule_similarity": 0.022783756072040005,
+  "hobbies_similarity": 0.019979013733788794,
+  "cleanliness_similarity": 0.019259082512244136,
+  "budget_similarity": 0.01266561462708865,
+  "compatibility_factor_similarity": 0.01229832569678326,
+  "move_in_similarity": 0.011837305277361805,
+  "noise_preference_similarity": 0.011720756834539143,
+  "social_level_similarity": 0.008244059136131443,
+  "food_habit_similarity": 0.004950912977374816,
+  "room_type_similarity": 0.00471860239860935,
+  "study_environment_similarity": 0.003437655045029517,
+  "occupation_similarity": 0.002896191962723113,
+  "age_similarity": 0.002366006028981129,
+  "weekend_lifestyle_similarity": 0.0022861416690144417,
+  "cleaning_frequency_similarity": 0.0021191228951052137,
+  "pg_type_similarity": 0.001203541857792205,
+  "wake_up_time_similarity": 0.0011507705616415026,
+  "distance_preference_similarity": 0.0010984710833610992
+}

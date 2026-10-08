@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "343383265863",
+    "project_id": "apnastay-f5379",
+    "storage_bucket": "apnastay-f5379.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:343383265863:android:276fdce58aa7966abdd762",
+        "android_client_info": {
+          "package_name": "com.example.apnastay"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD-HLkaOvRUWqVDn73p0_HRElmSp8pInjE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
