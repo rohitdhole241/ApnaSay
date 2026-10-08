@@ -1,6 +1,4 @@
 import os
-import json
-import base64
 import firebase_admin
 
 from firebase_admin import credentials
@@ -8,46 +6,50 @@ from firebase_admin import firestore
 
 
 SERVICE_ACCOUNT_FILE = "serviceAccountKey.json"
-FIREBASE_SERVICE_ACCOUNT_BASE64 = os.getenv(
-    "FIREBASE_SERVICE_ACCOUNT_BASE64"
-)
+
+
+def get_firebase_credentials():
+    project_id = os.getenv("FIREBASE_PROJECT_ID")
+    private_key_id = os.getenv("FIREBASE_PRIVATE_KEY_ID")
+    private_key = os.getenv("FIREBASE_PRIVATE_KEY")
+    client_email = os.getenv("FIREBASE_CLIENT_EMAIL")
+    client_id = os.getenv("FIREBASE_CLIENT_ID")
+    client_x509_cert_url = os.getenv(
+        "FIREBASE_CLIENT_X509_CERT_URL"
+    )
+
+    # Render / production
+    if project_id and private_key and client_email:
+        service_account_info = {
+            "type": "service_account",
+            "project_id": project_id,
+            "private_key_id": private_key_id or "",
+            "private_key": private_key.replace("\\n", "\n"),
+            "client_email": client_email,
+            "client_id": client_id or "",
+            "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+            "token_uri": "https://oauth2.googleapis.com/token",
+            "auth_provider_x509_cert_url": (
+                "https://www.googleapis.com/oauth2/v1/certs"
+            ),
+            "client_x509_cert_url": client_x509_cert_url or "",
+        }
+
+        return credentials.Certificate(service_account_info)
+
+    # Local development
+    if os.path.exists(SERVICE_ACCOUNT_FILE):
+        return credentials.Certificate(SERVICE_ACCOUNT_FILE)
+
+    raise FileNotFoundError(
+        "Firebase credentials not found. "
+        "Configure Firebase environment variables on Render "
+        "or place serviceAccountKey.json in the backend folder."
+    )
 
 
 if not firebase_admin._apps:
-
-    # Render / production
-    if FIREBASE_SERVICE_ACCOUNT_BASE64:
-        try:
-            encoded_credentials = FIREBASE_SERVICE_ACCOUNT_BASE64.strip()
-
-            # Restore missing Base64 padding if necessary
-            encoded_credentials += "=" * (-len(encoded_credentials) % 4)
-
-            decoded_json = base64.b64decode(
-                encoded_credentials
-            ).decode("utf-8")
-
-            service_account_info = json.loads(decoded_json)
-
-            cred = credentials.Certificate(service_account_info)
-
-        except Exception as error:
-            raise ValueError(
-                "FIREBASE_SERVICE_ACCOUNT_BASE64 contains invalid "
-                "Firebase credentials."
-            ) from error
-
-    # Local development
-    elif os.path.exists(SERVICE_ACCOUNT_FILE):
-        cred = credentials.Certificate(SERVICE_ACCOUNT_FILE)
-
-    else:
-        raise FileNotFoundError(
-            "Firebase credentials not found. "
-            "Set FIREBASE_SERVICE_ACCOUNT_BASE64 or "
-            "place serviceAccountKey.json inside the backend folder."
-        )
-
+    cred = get_firebase_credentials()
     firebase_admin.initialize_app(cred)
 
 
