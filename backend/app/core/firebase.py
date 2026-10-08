@@ -18,8 +18,16 @@ def get_firebase_credentials():
         "FIREBASE_CLIENT_X509_CERT_URL"
     )
 
+    # Safe diagnostic check.
+    # This prints only True/False, never the actual credentials.
+    print("Firebase environment check:")
+    print("PROJECT_ID:", bool(project_id))
+    print("CLIENT_EMAIL:", bool(client_email))
+    print("PRIVATE_KEY:", bool(private_key))
+
     # Render / production
     if project_id and private_key and client_email:
+
         service_account_info = {
             "type": "service_account",
             "project_id": project_id,
@@ -39,6 +47,7 @@ def get_firebase_credentials():
 
     # Local development
     if os.path.exists(SERVICE_ACCOUNT_FILE):
+        print("Using local serviceAccountKey.json")
         return credentials.Certificate(SERVICE_ACCOUNT_FILE)
 
     raise FileNotFoundError(
